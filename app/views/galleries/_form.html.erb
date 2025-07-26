@@ -1,37 +1,65 @@
-<%= form_with(model: gallery) do |form| %>
-  <% if gallery.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(gallery.errors.count, "error") %> prohibited this gallery from being saved:</h2>
 
-      <ul>
-        <% gallery.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+<div id="login" class="d-flex justify-content-center">
+  <div class="card">
+    <h2 class="card-title">New Gallery</h2>
+    <div class="card-body">
+      <%= form_with(model: gallery) do |form| %>
+      <% if gallery.errors.any? %>
+        <div style="color: red">
+          <h2><%= pluralize(gallery.errors.count, "error") %> prohibited this gallery from being saved:</h2>
+          <ul>
+              <% gallery.errors.each do |error| %>
+                <li><%= error.full_message %></li>
+              <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div>
+        <%= form.label :name, style: "display: block" %>
+        <%= form.text_field :name %>
+      </div>
+
+      <div>
+        <%= form.label :description, style: "display: block" %>
+        <%= form.text_field :description, placeholder: "Enter a short description" %>
+      </div>
+
+      <div>
+        <%= form.label :hidden, style: "display: block" %>
+        <%= form.checkbox :hidden %>
+        <p>Want to keep your gallery private? Check this box!</p>
+      </div>
+
+      <div>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#photo-form">Upload a photo</button>
+      </div>
+
+      <%= form.hidden_field :user_id, value: current_user.id %>
+
+      <div>
+        <%= form.submit %>
+      </div>
         <% end %>
-      </ul>
+      </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="photo-form" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title">Upload a photo</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= render "photos/form", photo: photo, gallery: gallery %>
+      </div>
+      <div class="modal-footer">
+        <!-- This works as user would expect page to reload when saving - allows a new photo model to be generated -->
+        <button type="button" data-bs-dismiss="modal" onclick="location.reload();">Save</button>
+      </div>
     </div>
-  <% end %>
-
-  <div>
-    <%= form.label :gallery_id, style: "display: block" %>
-    <%= form.number_field :gallery_id %>
   </div>
-
-  <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name %>
-  </div>
-
-  <div>
-    <%= form.label :hidden, style: "display: block" %>
-    <%= form.checkbox :hidden %>
-  </div>
-
-  <div>
-    <%= form.label :user_id, style: "display: block" %>
-    <%= form.text_field :user_id %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
-<% end %>
+</div>

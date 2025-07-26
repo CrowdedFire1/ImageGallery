@@ -3,16 +3,17 @@ class GalleriesController < ApplicationController
 
   # GET /galleries or /galleries.json
   def index
-    @galleries = Gallery.all
+    @galleries = Gallery.where(hidden: false)
   end
 
-  # GET /galleries/1 or /galleries/1.json
+  # GET /galleries/1
   def show
   end
 
   # GET /galleries/new
   def new
     @gallery = Gallery.new
+    @photo = Photo.new
   end
 
   # GET /galleries/1/edit

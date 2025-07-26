@@ -22,12 +22,32 @@
     <%= javascript_importmap_tags %>
     <%# Includes shakapacker application file%>
     <%= javascript_pack_tag "application", "data-turbo-track": "reload" %>
-    <%# uses bootstrap CDN %>
+    <%# uses bootstrap CDN to avoid shakapacker depreciation warnings%>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
   </head>
 
+  <nav class="navbar-nav navbar-expand-lg bg-info">
+    <ul class="navbar-nav">
+      <li class="nav-item mx-2">
+        <%= link_to "Galleries", galleries_path ,class: "nav-link" %>
+      </li>
+      <% if current_user.nil? == false %>
+        <li class="nav-item">
+          <%= link_to "Create New Gallery", new_gallery_path, class: "nav-link" %>
+        </li>
+      <% else %>
+        <li class="nav-item">
+            <%= link_to "Log In", new_user_session_path, class: "nav-link" %>
+        </li>
+        <% end %>
+    </ul>
+  </nav>
+
+
   <body>
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
     <%= yield %>
   </body>
 </html>

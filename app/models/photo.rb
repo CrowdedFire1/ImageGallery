@@ -20,5 +20,6 @@
 #
 class Photo < ApplicationRecord
   belongs_to :user
-  has_and_belongs_to_many :photos
+  has_and_belongs_to_many :galleries
+  has_one_attached :image
 end
