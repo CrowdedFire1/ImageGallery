@@ -54,6 +54,8 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  # Added Annotate gem to display database columns in model
+  gem "annotaterb"
 end
 
 group :test do
