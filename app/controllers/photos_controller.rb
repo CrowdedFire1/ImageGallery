@@ -12,6 +12,7 @@ class PhotosController < ApplicationController
 
   # GET /photos/new
   def new
+    @gallery = Gallery.find(params[:photo][:gallery_id])
     @photo = Photo.new
   end
 
@@ -21,14 +22,19 @@ class PhotosController < ApplicationController
 
   # POST /photos or /photos.json
   def create
-    @gallery_to_attach = Gallery.find(params[:gallery_id])
+    @gallery_to_attach = Gallery.find(params[:photo][:gallery_id])
     @photo = Photo.new(photo_params)
-    @photo.photo.attach(params[:photo])
+    @photo.image.attach(params[:photo][:image])
 
     respond_to do |format|
-      if @photo.save && @photo.photo.attached?
-        @gallery.photos << @photo
-        format.html { flash.now[:notice] = "Photo was successfully added." }
+      if @photo.save && @photo.image.attached?
+        @gallery_to_attach.photos << @photo
+        thumbnail = @photo.image.variant(resize_to_limit: [ 100, 100 ]).processed
+        thumbnail_blob = thumbnail.blob
+        download = StringIO.new(thumbnail.download)
+        @photo.thumbnail.attach(io: download, filename: thumbnail_blob.filename.to_s, content_type: thumbnail_blob.content_type)
+
+        format.html { redirect_to gallery_path(@gallery_to_attach), notice: "Photo was successfully added." }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @photo.errors, status: :unprocessable_entity }
@@ -54,7 +60,7 @@ class PhotosController < ApplicationController
     @photo.destroy!
 
     respond_to do |format|
-      format.html { redirect_to photos_path, status: :see_other, notice: "Photo was successfully destroyed." }
+      format.html { redirect_back fallback_location: root_path, status: :see_other, notice: "Photo was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -67,6 +73,6 @@ class PhotosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def photo_params
-      params.expect(photo: [ :photo_id, :alt_text, :user_id, :image, :gallery_id ])
+      params.expect(photo: [ :photo_id, :alt_text, :user_id, :image ])
     end
 end

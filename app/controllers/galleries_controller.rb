@@ -8,6 +8,7 @@ class GalleriesController < ApplicationController
 
   # GET /galleries/1
   def show
+    @gallery = Gallery.find(params[:id])
     @photo = Photo.new
     @gallery_photos = @gallery.photos
   end

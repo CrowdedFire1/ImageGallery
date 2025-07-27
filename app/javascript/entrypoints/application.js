@@ -1,5 +1,8 @@
-const modal = document.getElementById("display-image")
-modal.addEventListener("show.bs.modal", display_image)
+
+document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("display-image")
+    modal.addEventListener("show.bs.modal", display_image)
+});
 
 
 function display_image(event){

@@ -1,5 +1,3 @@
-<p style="color: green"><%= notice %></p>
-
 <% content_for :title, "Galleries" %>
 
 <h1>Galleries</h1>
@@ -16,5 +14,6 @@
     </div>
   <% end %>
 </div>
-
-<%= link_to "New gallery", new_gallery_path %>
+<% if !current_user.nil? && !@gallery.nil? && current_user.id == @gallery.user_id %>
+  <%= link_to "New gallery", new_gallery_path %>
+<% end %>

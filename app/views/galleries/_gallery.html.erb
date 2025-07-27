@@ -13,28 +13,39 @@
   <p>
     <% @gallery_photos.each do |photo| %>
       <button type="button" class="full-image-display" data-bs-toggle="modal" data-bs-target="#display-image" data-image-url="<%= url_for(photo.image) %>" data-image-alt="<%= photo.alt_text %>">
-        <%= image_tag photo.image.variant(resize_to_limit: [100, 100]).processed, alt: photo.alt_text %>
+        <% if photo.thumbnail.attached? %>
+          <%= image_tag photo.thumbnail, alt: photo.alt_text %>
+        <% else %> 
+          <div class="card text-center" style="width: 100px; height: 100px">
+            <p>No Thumbnail Available</p>
+          </div>
+        <% end %>
       </button>
+      <%= button_to "Delete", photo_path(photo), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
     <% end %>
     
   </p>
 
-  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#photo-form">Upload a photo</button>
+  <% if !current_user.nil? && !@gallery.nil? && current_user.id == @gallery.user_id %>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#photo-form">Upload a photo</button>
+  <% end %>
 </div>
-  
-<div class="modal fade" id="photo-form" tabindex=-1>
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title">Upload a photo</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <%= render "photos/form", photo: @photo, gallery: @gallery %>
+
+<% if !current_user.nil? && !@gallery.nil? && current_user.id == @gallery.user_id %>
+  <div class="modal fade" id="photo-form" tabindex=-1>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title">Upload a photo</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <%= render "photos/form", photo: @photo, gallery: @gallery %>
+        </div>
       </div>
     </div>
   </div>
-</div>
+<% end %>
 
 <div class="modal fade" id="display-image" tabindex=-1>
   <div class="modal-dialog">
@@ -47,6 +58,9 @@
       </div>
       <div id= "url-marker" class="modal-body d-flex justify-content-center">
         <!-- Dynamic Content here -->
+      </div>
+      <div id="footer" class="modal-footer">
+        <!-- dynamic destroy -->
       </div>
     </div>
   </div>
