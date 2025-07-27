@@ -21,12 +21,14 @@ class PhotosController < ApplicationController
 
   # POST /photos or /photos.json
   def create
+    @gallery_to_attach = Gallery.find(params[:gallery_id])
     @photo = Photo.new(photo_params)
+    @photo.photo.attach(params[:photo])
 
     respond_to do |format|
-      if @photo.save
-        format.html { redirect_to @photo, notice: "Photo was successfully created." }
-        format.json { render :show, status: :created, location: @photo }
+      if @photo.save && @photo.photo.attached?
+        @gallery.photos << @photo
+        format.html { flash.now[:notice] = "Photo was successfully added." }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @photo.errors, status: :unprocessable_entity }
@@ -65,6 +67,6 @@ class PhotosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def photo_params
-      params.expect(photo: [ :photo_id, :alt_text, :user_id, :image ])
+      params.expect(photo: [ :photo_id, :alt_text, :user_id, :image, :gallery_id ])
     end
 end

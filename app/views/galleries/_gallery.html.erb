@@ -11,8 +11,27 @@
   </p>
 
   <p>
-    <strong>User:</strong>
-    <%= gallery.user_id %>
+    <% @gallery_photos.each do |photo| %>
+      <%= image_tag photo.image.variant(resize_to_limit: [100, 100]).processed, alt: photo.alt_text %>
+    <% end %>
   </p>
+
+
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#photo-form">Upload a photo</button>
+
+  
+<div class="modal fade" id="photo-form" tabindex=-1>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title">Upload a photo</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= render "photos/form", photo: @photo, gallery: @gallery %>
+      </div>
+    </div>
+  </div>
+</div>
 
 </div>

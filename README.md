@@ -17,6 +17,8 @@ Rspec - Testing suite
 Shakapacker - Easy Handling of javascript and css
 Sassc-rails - sass engine for shakapacker
 
+ImageMagik - for image processing
+
 * System dependencies
 
 * Configuration

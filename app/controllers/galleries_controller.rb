@@ -8,12 +8,13 @@ class GalleriesController < ApplicationController
 
   # GET /galleries/1
   def show
+    @photo = Photo.new
+    @gallery_photos = @gallery.photos
   end
 
   # GET /galleries/new
   def new
     @gallery = Gallery.new
-    @photo = Photo.new
   end
 
   # GET /galleries/1/edit

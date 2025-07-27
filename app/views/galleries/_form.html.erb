@@ -31,10 +31,6 @@
         <p>Want to keep your gallery private? Check this box!</p>
       </div>
 
-      <div>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#photo-form">Upload a photo</button>
-      </div>
-
       <%= form.hidden_field :user_id, value: current_user.id %>
 
       <div>
@@ -42,24 +38,5 @@
       </div>
         <% end %>
       </div>
-  </div>
-</div>
-
-
-<div class="modal fade" id="photo-form" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title">Upload a photo</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <%= render "photos/form", photo: photo, gallery: gallery %>
-      </div>
-      <div class="modal-footer">
-        <!-- This works as user would expect page to reload when saving - allows a new photo model to be generated -->
-        <button type="button" data-bs-dismiss="modal" onclick="location.reload();">Save</button>
-      </div>
-    </div>
   </div>
 </div>
