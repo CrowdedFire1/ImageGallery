@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   devise_for :users
-  resources :photos
+  resources :photos do
+    member do
+      delete "destroy_image", to: "photos#destroy_image"
+    end
+  end
   resources :galleries
   resources :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -12,6 +16,8 @@ Rails.application.routes.draw do
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
+
+  get "your_galleries", to: "galleries#your_galleries"
 
   # Defines the root path route ("/")
   root "galleries#index"

@@ -1,5 +1,6 @@
 class PhotosController < ApplicationController
-  before_action :set_photo, only: %i[ show edit update destroy ]
+  before_action :authenticate_user!, only: %i[ edit update destroy create ]
+  load_and_authorize_resource
 
   # GET /photos or /photos.json
   def index
@@ -18,6 +19,8 @@ class PhotosController < ApplicationController
 
   # GET /photos/1/edit
   def edit
+    @gallery = Gallery.find(params[:gallery_id])
+    @photo = Photo.find(params[:id])
   end
 
   # POST /photos or /photos.json
@@ -29,10 +32,7 @@ class PhotosController < ApplicationController
     respond_to do |format|
       if @photo.save && @photo.image.attached?
         @gallery_to_attach.photos << @photo
-        thumbnail = @photo.image.variant(resize_to_limit: [ 100, 100 ]).processed
-        thumbnail_blob = thumbnail.blob
-        download = StringIO.new(thumbnail.download)
-        @photo.thumbnail.attach(io: download, filename: thumbnail_blob.filename.to_s, content_type: thumbnail_blob.content_type)
+        create_thunmbnail(@photo)
 
         format.html { redirect_to gallery_path(@gallery_to_attach), notice: "Photo was successfully added." }
       else
@@ -44,9 +44,11 @@ class PhotosController < ApplicationController
 
   # PATCH/PUT /photos/1 or /photos/1.json
   def update
+    @gallery = Gallery.find(params[:photo][:gallery_id])
     respond_to do |format|
       if @photo.update(photo_params)
-        format.html { redirect_to @photo, notice: "Photo was successfully updated." }
+        create_thunmbnail(@photo)
+        format.html { redirect_to gallery_path(@gallery), notice: "Photo was successfully updated." }
         format.json { render :show, status: :ok, location: @photo }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -65,6 +67,13 @@ class PhotosController < ApplicationController
     end
   end
 
+  # DELETE /photos/:id/destroy_image(:format)
+  def destroy_image
+    @photo.image.purge
+    @gallery = Gallery.find(params[:gallery_id])
+    redirect_to edit_photo_path(@photo, gallery_id: @gallery.id), notice: "Image was removed successfully."
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_photo
@@ -73,6 +82,13 @@ class PhotosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def photo_params
-      params.expect(photo: [ :photo_id, :alt_text, :user_id, :image ])
+      params.require(:photo).permit(:photo_id, :alt_text, :user_id, :image)
+    end
+
+    def create_thunmbnail(photo)
+      thumbnail = photo.image.variant(resize_to_limit: [ 100, 100 ]).processed
+      thumbnail_blob = thumbnail.blob
+      download = StringIO.new(thumbnail.download)
+      @photo.thumbnail.attach(io: download, filename: thumbnail_blob.filename.to_s, content_type: thumbnail_blob.content_type)
     end
 end

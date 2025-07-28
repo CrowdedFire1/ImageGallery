@@ -6,24 +6,41 @@
   </p>
 
   <p>
-    <strong>Hidden:</strong>
-    <%= gallery.hidden %>
+    <strong>Description:</strong>
+    <%= gallery.description %>
   </p>
 
   <p>
-    <% @gallery_photos.each do |photo| %>
-      <button type="button" class="full-image-display" data-bs-toggle="modal" data-bs-target="#display-image" data-image-url="<%= url_for(photo.image) %>" data-image-alt="<%= photo.alt_text %>">
-        <% if photo.thumbnail.attached? %>
-          <%= image_tag photo.thumbnail, alt: photo.alt_text %>
-        <% else %> 
-          <div class="card text-center" style="width: 100px; height: 100px">
-            <p>No Thumbnail Available</p>
-          </div>
-        <% end %>
-      </button>
-      <%= button_to "Delete", photo_path(photo), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+    <% if !current_user.nil? && !@gallery.nil? && current_user.id == @gallery.user_id %>
+      <strong>Public:</strong>
+      <%= !gallery.hidden %>
     <% end %>
-    
+  </p>
+
+  <p>
+    <div class="d-flex flex-wrap">
+      <% @gallery_photos.each do |photo| %>
+        <div class="d-flex flex-column item">
+          <div class="d-flex justify-content-center bg-light" style="width:105px; height:105px;">
+            <button type="button" class="full-image-display" style="width:100px; height:100px;" data-bs-toggle="modal" data-bs-target="#display-image" data-image-url="<%= url_for(photo.image) %>" data-image-alt="<%= photo.alt_text %>">
+              <% if photo.thumbnail.attached? %>
+                <%= image_tag photo.thumbnail, alt: photo.alt_text, style: "max-width:100%; max-height:100%; object-fit:cover;" %>
+              <% else %> 
+                <div class="card text-center" style="width: 100px; height: 100px">
+                  <p>No Thumbnail Available</p>
+                </div>
+              <% end %>
+            </button>
+          </div>
+          <div class="d-flex">
+            <% if !current_user.nil? && !@gallery.nil? && current_user.id == @gallery.user_id %>
+              <%= link_to "Edit", edit_photo_path(photo, gallery_id: gallery.id), class: "btn btn-primary px-1 ms-1 me-2", style: "width:46;"%>
+              <%= button_to "Delete", photo_path(photo), method: :delete, class: "btn px-1 btn-danger", style: "width:46;" %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
   </p>
 
   <% if !current_user.nil? && !@gallery.nil? && current_user.id == @gallery.user_id %>
@@ -47,7 +64,7 @@
   </div>
 <% end %>
 
-<div class="modal fade" id="display-image" tabindex=-1>
+<div class="modal fade" id="display-image" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -56,7 +73,7 @@
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div id= "url-marker" class="modal-body d-flex justify-content-center">
+      <div id="url-marker" class="modal-body d-flex justify-content-center">
         <!-- Dynamic Content here -->
       </div>
       <div id="footer" class="modal-footer">

@@ -32,11 +32,12 @@ class Ability
 
     user ||= User.new
 
-    can :read, :Gallery
+    can :read, Gallery
 
     if user.persisted?
-      can :manage, :Gallery, user_id: user.id
-      can :manage, :Photo, user_id: user.id
+      can :manage, Gallery, user_id: user.id
+      can :manage, Photo, user_id: user.id
+      can :manage, User, user_id: user.id
     end
   end
 end
