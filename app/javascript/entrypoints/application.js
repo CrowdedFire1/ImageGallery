@@ -1,3 +1,5 @@
-import Rails from "@rails/ujs"
-import "./gallery.js"
-Rails.start()
+import Rails from "@rails/ujs";
+import "@hotwired/turbo-rails"
+import "./gallery.js";
+import "./application.scss";
+Rails.start();
