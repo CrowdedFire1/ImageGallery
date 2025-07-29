@@ -12,7 +12,8 @@ An Image Gallery Website - Curate-A-Gallery.
 
 ---  
 * **System dependencies**
-  * **Gems (ontop of defaults)**  
+  * **Gems (ontop of defaults)**
+  Located in Gemfile
   Annotaterb - Adds comments to models with description of database columns  
   Rspec - Testing suite  
   CanCanCan - for handling authorisation  
@@ -20,7 +21,8 @@ An Image Gallery Website - Curate-A-Gallery.
   Devise Security - for password configuration
   Shakapacker - for Handling of javascript and css  
   
-  * **npm Libraries (that I have specifically installed)**  
+  * **npm Libraries (that I have specifically installed)**
+  Located in package.json
   ImageMagik - for image processing  
   rails/ujs - for javascript loading without a full page refresh
 
