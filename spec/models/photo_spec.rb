@@ -21,5 +21,12 @@
 require 'rails_helper'
 
 RSpec.describe Photo, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:user) { FactoryBot.create(:user) }
+  let(:photo) { FactoryBot.create(:photo, user_id: user.id) }
+  describe "#create_thumbnail" do
+    it "generates the thumbnail from original image" do
+      photo.create_thumbnail(photo)
+      expect(photo.thumbnail).to be_attached
+    end
+  end
 end

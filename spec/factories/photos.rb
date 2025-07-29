@@ -20,6 +20,11 @@
 #
 FactoryBot.define do
   factory :photo do
-    
+    alt_text { "This is a test photo." }
+    user_id { 0 }
+
+    after(:build) do |photo|
+      photo.image.attach(io: File.open(Rails.root.join("spec/fixtures/tree1.jpeg")), filename: "tree1.jpeg", content_type: "image/jpeg")
+    end
   end
 end
