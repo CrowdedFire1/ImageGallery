@@ -73,3 +73,7 @@ gem "shakapacker", "= 8.3"
 gem "cancancan"
 
 gem "devise", "~> 4.9"
+
+gem "active_storage_validations"
+
+gem "devise-security"

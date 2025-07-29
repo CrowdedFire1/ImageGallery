@@ -24,8 +24,14 @@ class Photo < ApplicationRecord
   has_one_attached :image
   has_one_attached :thumbnail
 
-  validates :image, presence: true
+  validates :image, presence: true, attached: true, content_type: [ "image/png", "image/jpeg" ]
   validates :alt_text, presence: true
+
+  before_validation :alt_text_sanatiser
+
+  def alt_text_sanatiser
+    self.alt_text = ActionController::Base.helpers.strip_tags(alt_text)
+  end
 
   # function to precompute thumbnails
   def create_thumbnail(photo)

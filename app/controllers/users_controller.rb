@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, only: %i[ new edit update destroy create ]
   load_and_authorize_resource
 
   # GET /users or /users.json
