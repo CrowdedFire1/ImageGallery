@@ -22,6 +22,9 @@
 #
 FactoryBot.define do
   factory :gallery do
-    
+    name { "Test Gallery" }
+    hidden { false }
+    description { "This is a test." }
+    user_id { 0 }
   end
 end
