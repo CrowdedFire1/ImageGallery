@@ -7,13 +7,17 @@ An Image Gallery Website - Curate-A-Gallery.
 * **Database** = PostgreSQL version 14
 
 * **Rails version** = 8.0.2
+
+* **Bundler version** = 2.5.17
+
 ---  
 * **System dependencies**
   * **Gems (ontop of defaults)**  
   Annotaterb - Adds comments to models with description of database columns  
   Rspec - Testing suite  
   CanCanCan - for handling authorisation  
-  Devise - for handling authentication  
+  Devise - for handling authentication
+  Devise Security - for password configuration
   Shakapacker - for Handling of javascript and css  
   
   * **npm Libraries (that I have specifically installed)**  
@@ -54,4 +58,10 @@ An Image Gallery Website - Curate-A-Gallery.
   7. Starts the shakapacker server, for handling javascript. This MUST be done in a second terminal window, in the same root directory as point 6.
   8. The website is ran locally on localhost, on port 3000. If this is different, see the link point 6 generates and follow that link instead.
   Once set up, to run the website locally, execute points 6 and 7.
+
+* **Security Considerations**  
+  File uploads are validated at the model level - only allowing png and jpeg images.
+  String values are sanatised at the model level - stripping all tags
+  Extended password requirements via devise security
+  
   
