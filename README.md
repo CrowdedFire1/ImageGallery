@@ -65,5 +65,9 @@ An Image Gallery Website - Curate-A-Gallery.
   File uploads are validated at the model level - only allowing png and jpeg images.
   String values are sanatised at the model level - stripping all tags
   Extended password requirements via devise security
+
+* **Additional Features**
+  * Public and Private Galleries:
+    A gallery can be hidden from the public galleries list so that it is viewable only to the owner of the gallery
   
   
