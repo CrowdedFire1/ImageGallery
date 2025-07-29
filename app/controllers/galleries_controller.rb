@@ -1,13 +1,22 @@
 class GalleriesController < ApplicationController
-  before_action :set_gallery, only: %i[ show edit update destroy ]
+  before_action :authenticate_user!, only: %i[ new edit update destroy create ]
+  load_and_authorize_resource
 
   # GET /galleries or /galleries.json
   def index
-    @galleries = Gallery.all
+    @galleries = Gallery.where(hidden: false)
   end
 
-  # GET /galleries/1 or /galleries/1.json
+  # GET /your_galleries
+  def your_galleries
+    @galleries = Gallery.where(user_id: current_user.id)
+  end
+
+  # GET /galleries/1
   def show
+    @gallery = Gallery.find(params[:id])
+    @photo = Photo.new
+    @gallery_photos = @gallery.photos
   end
 
   # GET /galleries/new
@@ -65,6 +74,6 @@ class GalleriesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def gallery_params
-      params.expect(gallery: [ :gallery_id, :name, :hidden, :user_id ])
+      params.expect(gallery: [ :gallery_id, :name, :hidden, :user_id, :description ])
     end
 end

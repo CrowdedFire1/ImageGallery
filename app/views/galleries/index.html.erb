@@ -1,16 +1,19 @@
-<p style="color: green"><%= notice %></p>
-
 <% content_for :title, "Galleries" %>
 
-<h1>Galleries</h1>
+<h2>Galleries</h2>
 
 <div id="galleries">
   <% @galleries.each do |gallery| %>
-    <%= render gallery %>
-    <p>
-      <%= link_to "Show this gallery", gallery %>
-    </p>
+    <div class="card pt-2">
+        <div class="card-title">
+            <%= link_to gallery.name, gallery_path(gallery) %>
+        </div>
+        <div class="card-text">
+            <%= gallery.description %>
+        </div>
+    </div>
   <% end %>
 </div>
-
-<%= link_to "New gallery", new_gallery_path %>
+<% if !current_user.nil? && !@gallery.nil? && current_user.id == @gallery.user_id %>
+  <%= link_to "New gallery", new_gallery_path %>
+<% end %>

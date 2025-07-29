@@ -23,5 +23,8 @@ module ImageGallery
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # ensure active storage uses imagemagik, rather than libvips
+    config.active_storage.variant_processor = :mini_magick
   end
 end

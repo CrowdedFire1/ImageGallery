@@ -20,5 +20,18 @@
 #
 class Photo < ApplicationRecord
   belongs_to :user
-  has_and_belongs_to_many :photos
+  has_and_belongs_to_many :galleries
+  has_one_attached :image
+  has_one_attached :thumbnail
+
+  validates :image, presence: true
+  validates :alt_text, presence: true
+
+  # function to precompute thumbnails
+  def create_thumbnail(photo)
+      thumbnail = photo.image.variant(resize_to_limit: [ 100, 100 ]).processed
+      thumbnail_blob = thumbnail.blob
+      download = StringIO.new(thumbnail.download)
+      photo.thumbnail.attach(io: download, filename: thumbnail_blob.filename.to_s, content_type: thumbnail_blob.content_type)
+  end
 end

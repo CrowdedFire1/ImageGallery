@@ -2,13 +2,14 @@
 #
 # Table name: galleries
 #
-#  id         :bigint           not null, primary key
-#  hidden     :boolean
-#  name       :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  gallery_id :integer
-#  user_id    :bigint           not null
+#  id          :bigint           not null, primary key
+#  description :string
+#  hidden      :boolean
+#  name        :string
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  gallery_id  :integer
+#  user_id     :bigint           not null
 #
 # Indexes
 #
@@ -22,4 +23,6 @@
 class Gallery < ApplicationRecord
   belongs_to :user
   has_and_belongs_to_many :photos
+
+  validates :description, presence: true
 end

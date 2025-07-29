@@ -1,0 +1,14 @@
+<% content_for :title, "Your Galleries" %>
+
+<h2>Your Galleries</h2>
+
+<% @galleries.each do |gallery| %>
+  <div class="card pt-2">
+      <div class="card-title">
+          <%= link_to gallery.name, gallery_path(gallery) %>
+      </div>
+      <div class="card-text">
+          <%= gallery.description %>
+      </div>
+  </div>
+<% end %>

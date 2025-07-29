@@ -11,6 +11,16 @@ Things you may want to cover:
 
 * Rails version = 8.0.2
 
+* Gems I have added ontop of defaults
+Annotaterb - Adds comments to models with description of database columns
+Rspec - Testing suite
+Shakapacker - Easy Handling of javascript and css
+Sassc-rails - sass engine for shakapacker
+
+npm libraries 
+ImageMagik - for image processing
+rails/ujs
+
 * System dependencies
 
 * Configuration

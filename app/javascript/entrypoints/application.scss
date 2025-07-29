@@ -1,0 +1,16 @@
+body {
+    background-color: linen;
+}
+
+nav {
+    border-bottom: medium solid black ;
+}
+
+nav ul li {
+    padding-right: 10px;
+    border-right: 1px solid black;
+}
+
+nav ul li:last_child {
+    border-right: none;
+}
