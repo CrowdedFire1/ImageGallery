@@ -35,8 +35,10 @@ class Photo < ApplicationRecord
 
   # function to precompute thumbnails
   def create_thumbnail(photo)
+      # generates the transformations to the thumbnail
       thumbnail = photo.image.variant(resize_to_limit: [ 100, 100 ]).processed
       thumbnail_blob = thumbnail.blob
+      # downloads the image, applying the transformation
       download = StringIO.new(thumbnail.download)
       photo.thumbnail.attach(io: download, filename: thumbnail_blob.filename.to_s, content_type: thumbnail_blob.content_type)
   end

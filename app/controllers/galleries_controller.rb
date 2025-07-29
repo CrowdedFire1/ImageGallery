@@ -4,6 +4,7 @@ class GalleriesController < ApplicationController
 
   # GET /galleries or /galleries.json
   def index
+    # paramters passed in to prevent sql injection
     @galleries = Gallery.where("hidden = ?", false)
   end
 
@@ -14,6 +15,7 @@ class GalleriesController < ApplicationController
 
   # GET /galleries/1
   def show
+    # photo object is stored here (and regenerated each page refresh) for the photo uploading
     @gallery = Gallery.find(params[:id])
     @photo = Photo.new
     @gallery_photos = @gallery.photos

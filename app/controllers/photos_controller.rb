@@ -32,7 +32,9 @@ class PhotosController < ApplicationController
 
     respond_to do |format|
       if @photo.save && @photo.image.attached?
+        # links the photo to the gallery
         @gallery_to_attach.photos << @photo
+        # performs the precomputation of the full size image and saves the thumbnail as a seperate attachment
         @photo.create_thumbnail(@photo)
 
         format.html { redirect_to gallery_path(@gallery_to_attach), notice: "Photo was successfully added." }
