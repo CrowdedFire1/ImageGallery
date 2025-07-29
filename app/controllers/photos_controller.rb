@@ -32,7 +32,7 @@ class PhotosController < ApplicationController
     respond_to do |format|
       if @photo.save && @photo.image.attached?
         @gallery_to_attach.photos << @photo
-        create_thunmbnail(@photo)
+        @photo.create_thumbnail(@photo)
 
         format.html { redirect_to gallery_path(@gallery_to_attach), notice: "Photo was successfully added." }
       else
@@ -47,7 +47,7 @@ class PhotosController < ApplicationController
     @gallery = Gallery.find(params[:photo][:gallery_id])
     respond_to do |format|
       if @photo.update(photo_params)
-        create_thunmbnail(@photo)
+        @photo.create_thumbnail(@photo)
         format.html { redirect_to gallery_path(@gallery), notice: "Photo was successfully updated." }
         format.json { render :show, status: :ok, location: @photo }
       else
@@ -83,12 +83,5 @@ class PhotosController < ApplicationController
     # Only allow a list of trusted parameters through.
     def photo_params
       params.require(:photo).permit(:photo_id, :alt_text, :user_id, :image)
-    end
-
-    def create_thunmbnail(photo)
-      thumbnail = photo.image.variant(resize_to_limit: [ 100, 100 ]).processed
-      thumbnail_blob = thumbnail.blob
-      download = StringIO.new(thumbnail.download)
-      @photo.thumbnail.attach(io: download, filename: thumbnail_blob.filename.to_s, content_type: thumbnail_blob.content_type)
     end
 end
