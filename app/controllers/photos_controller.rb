@@ -25,13 +25,16 @@ class PhotosController < ApplicationController
 
   # POST /photos or /photos.json
   def create
-    @gallery_to_attach = Gallery.find(params[:photo][:gallery_id])
+    @gallery_to_attach = Gallery.find_by(id: params[:photo][:gallery_id])
     @photo = Photo.new(photo_params)
+    @photo.user_id = current_user.id
     @photo.image.attach(params[:photo][:image])
 
     respond_to do |format|
       if @photo.save && @photo.image.attached?
+        # links the photo to the gallery
         @gallery_to_attach.photos << @photo
+        # performs the precomputation of the full size image and saves the thumbnail as a seperate attachment
         @photo.create_thumbnail(@photo)
 
         format.html { redirect_to gallery_path(@gallery_to_attach), notice: "Photo was successfully added." }
@@ -70,6 +73,7 @@ class PhotosController < ApplicationController
   # DELETE /photos/:id/destroy_image(:format)
   def destroy_image
     @photo.image.purge
+    @photo.thumbnail.purge
     @gallery = Gallery.find(params[:gallery_id])
     redirect_to edit_photo_path(@photo, gallery_id: @gallery.id), notice: "Image was removed successfully."
   end
@@ -82,6 +86,6 @@ class PhotosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def photo_params
-      params.require(:photo).permit(:photo_id, :alt_text, :user_id, :image)
+      params.require(:photo).permit(:photo_id, :alt_text, :image)
     end
 end

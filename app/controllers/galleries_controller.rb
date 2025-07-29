@@ -4,16 +4,18 @@ class GalleriesController < ApplicationController
 
   # GET /galleries or /galleries.json
   def index
-    @galleries = Gallery.where(hidden: false)
+    # paramters passed in to prevent sql injection
+    @galleries = Gallery.where("hidden = ?", false)
   end
 
   # GET /your_galleries
   def your_galleries
-    @galleries = Gallery.where(user_id: current_user.id)
+    @galleries = Gallery.where("user_id = ?", current_user.id)
   end
 
   # GET /galleries/1
   def show
+    # photo object is stored here (and regenerated each page refresh) for the photo uploading
     @gallery = Gallery.find(params[:id])
     @photo = Photo.new
     @gallery_photos = @gallery.photos
@@ -31,6 +33,7 @@ class GalleriesController < ApplicationController
   # POST /galleries or /galleries.json
   def create
     @gallery = Gallery.new(gallery_params)
+    @gallery.user_id = current_user.id
 
     respond_to do |format|
       if @gallery.save
@@ -74,6 +77,6 @@ class GalleriesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def gallery_params
-      params.expect(gallery: [ :gallery_id, :name, :hidden, :user_id, :description ])
+      params.expect(gallery: [ :gallery_id, :name, :hidden, :description ])
     end
 end

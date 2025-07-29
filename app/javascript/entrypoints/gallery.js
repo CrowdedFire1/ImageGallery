@@ -5,6 +5,7 @@ document.addEventListener("turbo:load", () => {
     }
 });
 
+// adds in the full size image (url taken from the view) to the modal, with the alt text
 function display_image(event){
     const display_button = event.relatedTarget;
     const url = display_button.getAttribute("data-image-url");

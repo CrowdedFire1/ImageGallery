@@ -18,7 +18,14 @@
     <% else %>
       <div class="d-flex flex-column item">
         <div class="d-flex justify-content-center bg-light" style="width:105px; height:105px;">
-            <button type="button" class="full-image-display" style="width:100px; height:100px;" data-bs-toggle="modal" data-bs-target="#display-image" data-image-url="<%= url_for(photo.image) %>" data-image-alt="<%= photo.alt_text %>">
+            <button type="button"
+              class="full-image-display"
+              style="width:100px; height:100px;"
+              data-bs-toggle="modal"
+              data-bs-target="#display-image"
+              data-image-url="<%= url_for(photo.image) %>"
+              data-image-alt="<%= photo.alt_text %>">
+              
             <% if photo.thumbnail.attached? %>
                 <%= image_tag photo.thumbnail, alt: photo.alt_text, style: "max-width:100%; max-height:100%; object-fit:cover;" %>
             <% else %> 
@@ -44,8 +51,6 @@
   </div>
 
   <%= form.hidden_field :gallery_id, value: gallery.id %>
-
-  <%= form.hidden_field :user_id, value: current_user.id %>
 
   <div class="py-2">
     <%= form.submit %>

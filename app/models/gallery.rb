@@ -25,4 +25,11 @@ class Gallery < ApplicationRecord
   has_and_belongs_to_many :photos
 
   validates :description, presence: true
+
+  before_validation :description_sanatiser
+
+
+  def description_sanatiser
+    self.description = ActionController::Base.helpers.strip_tags(description)
+  end
 end
